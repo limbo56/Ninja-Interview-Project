@@ -10,10 +10,11 @@ class ListDevices extends Component {
   componentDidMount() {
     this.props.getDevices()
   }
-
+  
   render() {
-    var arr = filterType(filterName(this.props.devices, this.props.searchName), this.props.searchbyType)
-    sort(arr, this.props.searchbyCapacity);
+    const { devices, searchName, searchbyType, searchbyCapacity} = this.props
+    const arr = filterType(filterName(devices, searchName), searchbyType)
+    sort(arr, searchbyCapacity);
     return (
       <div className="list-box">
         <ListOPtions />

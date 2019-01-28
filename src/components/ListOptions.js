@@ -46,7 +46,7 @@ class ListOPtions extends Component {
                             <select id="hdd_capacity" name="hdd_capacity" value={this.state.hdd_capacity} onChange={this.handleChangeCapacity}>
                                 <option value="HDD CAPACITY">HDD CAPACITY</option>
                                 <option value="LOW TO HIGH">LOW TO HIGH</option>
-                                <option value="HIGH To LOW">HIGH To LOW</option>
+                                <option value="HIGH TO LOW">HIGH TO LOW</option>
                             </select>
                         </div>
                     </div>

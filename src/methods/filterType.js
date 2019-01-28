@@ -1,8 +1,2 @@
-const sort = (arr = [], key) => {
-    if (key !== "ALL") {
-        return arr.filter(el => el.type === key)
-    }
-    return arr
-}
-
+const sort = (arr = [], key) => key !== "ALL" ? arr.filter(el => el.type === key) : arr;
 export default sort;
