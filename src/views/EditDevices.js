@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { DEVICES } from '../actions';
 import { Link } from 'react-router-dom';
 import { withAlert } from 'react-alert'
-import '../css/deviceform.css';
+
 
 class EditDevice extends Component {
     constructor(props) {

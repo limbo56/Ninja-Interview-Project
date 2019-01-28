@@ -4,7 +4,7 @@ import Device from '../components/Device';
 import { DEVICES } from '../actions';
 import ListOPtions from '../components/ListOptions';
 import { sortCapacity as sort, filterType, filterName } from '../methods'
-import '../css/list.css'
+
 
 class ListDevices extends Component {
   componentDidMount() {

@@ -1,8 +1,14 @@
-.App {
+@import './variables.scss';
+@import './device.scss';
+@import './deviceform.scss';
+@import './list.scss';
+
+ .App {
   text-align: center;
   height: 100vh;
   background-color: #eeeeee;
 }
+
 .App-header {
   background-color: #282c34;
   min-height: 10vh;
@@ -17,6 +23,3 @@
 .App-link {
   color: #61dafb;
 }
-
-
-

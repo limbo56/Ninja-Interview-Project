@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import {List ,AddDevice, EditDevices} from '../views';
 
-import '../css/App.css';
+import '../sass/App.scss';
 
 class Rooter extends PureComponent {
   constructor(props) {

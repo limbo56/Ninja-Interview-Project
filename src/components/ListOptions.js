@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import { DEVICES } from '../actions';
 import { Link } from 'react-router-dom';
-import '../css/list.css'
+
 
 class ListOPtions extends Component {
     constructor(props) {

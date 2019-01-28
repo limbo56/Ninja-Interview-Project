@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import './../css/device.css'
 import { DEVICES } from '../actions';
 import { Link } from 'react-router-dom';
 
