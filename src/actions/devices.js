@@ -22,10 +22,10 @@ export const DEVICES = (dispatch) => ({
       dispatch({ type: "ADD_DEVICE", device })
     }
   },
-  removeDevice: async (device, index) => {
+  removeDevice: async (device) => {
     const response = await fetcher(server + "/devices/" + device.id, "DELETE")
     if (response === 1) {
-      dispatch({ type: "REMOVE_DEVICE", index })
+      dispatch({ type: "REMOVE_DEVICE", device })
     }
   },
   updateDevice: async (device) => {
@@ -33,9 +33,6 @@ export const DEVICES = (dispatch) => ({
     if (response === 1) {
       dispatch({ type: "UPDATE_DEVICES", device })
     }
-  },
-  indexEdit: (index) => {
-    dispatch({ type: "INDEX_EDIT", index });
   },
   filterCapacity: (value) => {
     dispatch({ type: "FILTER_CAPACITY", value })

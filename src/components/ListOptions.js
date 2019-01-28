@@ -22,11 +22,6 @@ class ListOPtions extends Component {
     handleChangeCapacity = (event) => {
         this.setState({ hdd_capacity: event.target.value }, () => this.props.filterCapacity(this.state.hdd_capacity));
     }
-
-    componentDidMount() {
-
-    }
-
     render() {
         return (
             <div className="list-box">

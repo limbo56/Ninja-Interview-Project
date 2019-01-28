@@ -20,7 +20,7 @@ class ListDevices extends Component {
         <div className="list-devices-main">
           <div className="list-devices">
             {
-              arr.map((device, index) => <Device data={device} index={index} key={device.id} />)
+              arr.map((device) => <Device data={device} key={device.id} />)
             }
           </div>
         </div>

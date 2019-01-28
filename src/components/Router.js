@@ -23,9 +23,6 @@ class Rooter extends PureComponent {
             <Route exact path='/' component={List} />
           </Switch>
         </BrowserRouter>
-        <footer>
-
-        </footer>
       </div>
     );
   }

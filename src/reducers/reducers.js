@@ -21,17 +21,9 @@ const getDevice = (state, { device }) => ({
   devicetoedit: device
 });
 
-const removeDevice = (state, { index }) => ({
+const removeDevice = (state, { device }) => ({
   ...state,
-  devices: [
-    ...state.devices.slice(0, index),
-    ...state.devices.slice(index + 1)
-  ]
-});
-
-const indexEdit = (state, { index }) => ({
-  ...state,
-  indextoedit: index
+  devices: state.devices.filter(({ id }) => id !== device.id)
 });
 
 const updateDevices = (state, { device }) => (
@@ -64,8 +56,6 @@ function rootReducer(state = initialState(), action) {
       return getDevice(state, action)
     case "UPDATE_DEVICES":
       return updateDevices(state, action)
-    case "INDEX_EDIT":
-      return indexEdit(state, action)
     case "FILTER_CAPACITY":
       return filterCapacity(state, action)
     case "FILTER_TYPE":

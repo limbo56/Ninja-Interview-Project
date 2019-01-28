@@ -21,11 +21,7 @@ class AddDevice extends Component {
   onSubmit = (event) => {
     if (this.state.system_name.length > 0 && parseInt(this.state.hdd_capacity) > 0) {
       console.log("all ok")
-      this.props.addDevice({
-        system_name: this.state.system_name,
-        type: this.state.type,
-        hdd_capacity: this.state.hdd_capacity
-      })
+      this.props.addDevice(this.state)
     }
     else {
       event.preventDefault();

@@ -5,15 +5,8 @@ import { Link } from 'react-router-dom';
 
 class Device extends Component {
 
-  deleteDevice = (device, index) => {
-    this.props.removeDevice(device, index)
-  }
-  indexEdit = (device, index) => {
-    this.props.indexEdit(index)
-  }
   render() {
     var device = this.props.data;
-    var index = this.props.index;
     return (
       <div className="device-main-box">
         <div className="device-info">
@@ -22,10 +15,10 @@ class Device extends Component {
           <span className="device-capacity">{device.hdd_capacity} GB</span>
         </div>
         <div className="device-options">
-          <Link to={"/devices/edit/"+device.id}>
-            <button className="device-edit" onClick={e => this.indexEdit(device, index)}>Edit</button>
+          <Link to={"/devices/edit/" + device.id} className="device-edit" >
+            Edit
           </Link>
-          <button className="device-remove" onClick={e => this.deleteDevice(device, index)}>Remove</button>
+          <button className="device-remove" onClick={e => this.props.removeDevice(device)}>Remove</button>
         </div>
       </div>
     );

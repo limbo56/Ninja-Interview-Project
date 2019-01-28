@@ -21,22 +21,14 @@ class EditDevice extends Component {
     }
     onSubmit = (event) => {
         if (this.state.system_name.length > 0 && parseInt(this.state.hdd_capacity) > 0) {
-            this.props.updateDevice({
-                id: this.state.id,
-                system_name: this.state.system_name,
-                type: this.state.type,
-                hdd_capacity: this.state.hdd_capacity
-            })
+            this.props.updateDevice(this.state)
         }
         else {
             event.preventDefault();
             this.props.alert.show('No empty fields allowed!')
         }
     }
-
-
     componentWillMount() {
-
         this.props.getDevice(this.props.match.params.id, () => {
             var device_edit = this.props.devicetoedit
             this.setState({
@@ -46,11 +38,8 @@ class EditDevice extends Component {
                 hdd_capacity: device_edit.hdd_capacity
             })
         })
-
-
     }
     render() {
-
         return (
             <div className="device-form-container">
                 <div className="device-form">
