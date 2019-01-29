@@ -38,8 +38,6 @@ const filterType = (state, { value }) => ({
   filter_by: value
 });
 
-
-
 function rootReducer(state = initialState(), action) {
   switch (action.type) {
     case "ADD_DEVICE":

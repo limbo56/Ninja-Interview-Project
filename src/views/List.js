@@ -16,6 +16,7 @@ class ListDevices extends Component {
     const filter_arr = filter(devices,"type", filter_by)
     const sort_arr = sort(filter_arr, sort_by)
 
+
     return (
       <div className="list-box">
         <ListOPtions />
