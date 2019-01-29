@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Device from '../components/Device';
 import { DEVICES } from '../actions';
 import ListOPtions from '../components/ListOptions';
-import {  sort, filter } from '../methods'
+import { filter } from '../methods'
 
 
 class ListDevices extends Component {
@@ -12,10 +12,8 @@ class ListDevices extends Component {
   }
   
   render() {
-    const { devices, filter_by, sort_by} = this.props
-    const filter_arr = filter(devices,"type", filter_by)
-    const sort_arr = sort(filter_arr, sort_by)
-
+    const { devices, filter_by} = this.props
+    const arr = filter(devices,"type", filter_by)
 
     return (
       <div className="list-box">
@@ -23,7 +21,7 @@ class ListDevices extends Component {
         <div className="list-devices-main">
           <div className="list-devices">
             {
-              sort_arr.map((device) => <Device data={device} key={device.id} />)
+              arr.map((device) => <Device data={device} key={device.id} />)
             }
           </div>
         </div>

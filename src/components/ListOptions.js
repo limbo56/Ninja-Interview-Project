@@ -13,13 +13,10 @@ class ListOPtions extends Component {
         }
     }
     filterBy = (event) => {
-        this.setState({ device_type: event.target.value }, () =>{
-            
-          return  this.props.filterList(this.state.device_type);
-        })
+        this.setState({ device_type: event.target.value }, () => this.props.filterList(this.state.device_type));
     }
     sortBy = (event) => {
-        this.setState({ sort_by: event.target.value }, () => this.props.sortList(this.state.sort_by));
+        this.setState({ sort_by: event.target.value }, () => this.props.sortList(this.props.devices , this.state.sort_by));
     }
     render() {
         return (

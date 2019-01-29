@@ -1,11 +1,12 @@
 import { fetcher } from '../methods';
-
+import {  sort } from '../methods'
 const server = "http://localhost:3000";
 
 export const DEVICES = (dispatch) => ({
   getDevices: async () => {
-    const devices = await fetcher(server + "/devices", "GET")
+    var devices = await fetcher(server + "/devices", "GET")
     if (devices) {
+       devices = sort(devices, "hdd_capacity")
       dispatch({ type: "GET_DEVICES", devices })
     }
   },
@@ -37,8 +38,9 @@ export const DEVICES = (dispatch) => ({
   filterList: (value) => {
     dispatch({ type: "FILTER_TYPE", value })
   },
-  sortList: (value) => {
-    dispatch({ type: "SORT_BY", value })
+  sortList: (dev, key) => {
+    const devices = sort(dev, key)
+    dispatch({ type: "SORT_BY", devices })
   },
 });
 

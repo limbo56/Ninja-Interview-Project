@@ -1,8 +1,6 @@
 const initialState = () => ({
   devices: [],
-  fil_sort: [],
   filter_by: "ALL",
-  sort_by: "hdd_capacity"
 });
 
 const addDevice = (state, { device }) => ({
@@ -28,9 +26,9 @@ const removeDevice = (state, { device }) => ({
 const updateDevices = (state, { device }) => (
   { ...state })
 
-const sortBy = (state, { value }) => ({
+const sortBy = (state, { devices }) => ({
   ...state,
-  sort_by: value
+  devices: [].concat(devices)
 });
 
 const filterType = (state, { value }) => ({
