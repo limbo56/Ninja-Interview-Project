@@ -30,13 +30,7 @@ class EditDevice extends Component {
     }
     componentWillMount() {
         this.props.getDevice(this.props.match.params.id, () => {
-            var device_edit = this.props.devicetoedit
-            this.setState({
-                id: device_edit.id,
-                system_name: device_edit.system_name,
-                type: device_edit.type,
-                hdd_capacity: device_edit.hdd_capacity
-            })
+            this.setState(this.props.devicetoedit)
         })
     }
     render() {

@@ -1,5 +1,6 @@
 const initialState = () => ({
   devices: [],
+  fil_devices: [],
   filter_by: "ALL",
 });
 
@@ -10,7 +11,8 @@ const addDevice = (state, { device }) => ({
 
 const getDevices = (state, { devices }) => ({
   ...state,
-  devices
+  devices,
+  fil_devices: devices
 });
 
 const getDevice = (state, { device }) => ({

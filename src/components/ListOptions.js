@@ -12,6 +12,7 @@ class ListOPtions extends Component {
             sort_by: ""
         }
     }
+    
     filterBy = (event) => {
         this.setState({ device_type: event.target.value }, () => this.props.filterList(this.state.device_type));
     }

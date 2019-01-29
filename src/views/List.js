@@ -10,7 +10,7 @@ class ListDevices extends Component {
   componentDidMount() {
     this.props.getDevices()
   }
-  
+
   render() {
     const { devices, filter_by} = this.props
     const arr = filter(devices,"type", filter_by)
@@ -32,8 +32,8 @@ class ListDevices extends Component {
 
 const mapStateToProps = state => ({
   devices: state.devices,
+  fil_devices: state.fil_devices,
   filter_by: state.filter_by,
-  sort_by: state.sort_by
 });
 const mapDispatchToProps = dispatch => DEVICES(dispatch)
 
