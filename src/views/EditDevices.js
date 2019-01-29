@@ -4,7 +4,6 @@ import { DEVICES } from '../actions';
 import { Link } from 'react-router-dom';
 import { withAlert } from 'react-alert'
 
-
 class EditDevice extends Component {
     constructor(props) {
         super(props);
@@ -58,8 +57,8 @@ class EditDevice extends Component {
 }
 const mapStateToProps = state => {
     return {
-        devices: state.devices,
-        devicetoedit: state.devicetoedit
+        devices: state.devicesReducer.devices,
+        devicetoedit: state.devicesReducer.devicetoedit
     };
 };
 const mapDispatchToProps = dispatch => DEVICES(dispatch)

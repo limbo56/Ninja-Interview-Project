@@ -11,8 +11,7 @@ const addDevice = (state, { device }) => ({
 
 const getDevices = (state, { devices }) => ({
   ...state,
-  devices,
-  fil_devices: devices
+  devices
 });
 
 const getDevice = (state, { device }) => ({
@@ -38,7 +37,7 @@ const filterType = (state, { value }) => ({
   filter_by: value
 });
 
-function rootReducer(state = initialState(), action) {
+function devicesReducer(state = initialState(), action) {
   switch (action.type) {
     case "ADD_DEVICE":
       return addDevice(state, action)
@@ -58,4 +57,4 @@ function rootReducer(state = initialState(), action) {
       return state;
   }
 };
-export default rootReducer;
+export default devicesReducer;

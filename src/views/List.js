@@ -14,6 +14,7 @@ class ListDevices extends Component {
   render() {
     const { devices, filter_by} = this.props
     const arr = filter(devices,"type", filter_by)
+    console.log(this.props.globalstate)
 
     return (
       <div className="list-box">
@@ -31,9 +32,10 @@ class ListDevices extends Component {
 }
 
 const mapStateToProps = state => ({
-  devices: state.devices,
-  fil_devices: state.fil_devices,
-  filter_by: state.filter_by,
+  globalstate: state,
+  devices: state.devicesReducer.devices,
+  fil_devices: state.devicesReducer.fil_devices,
+  filter_by: state.devicesReducer.filter_by,
 });
 const mapDispatchToProps = dispatch => DEVICES(dispatch)
 

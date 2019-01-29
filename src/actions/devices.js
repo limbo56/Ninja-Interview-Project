@@ -35,7 +35,7 @@ export const DEVICES = (dispatch) => ({
       dispatch({ type: "UPDATE_DEVICES", device })
     }
   },
-  filterList: (value) => { 
+  filterValue: (value) => { 
     dispatch({ type: "FILTER_TYPE", value })
   },
   sortList: (dev, key) => {

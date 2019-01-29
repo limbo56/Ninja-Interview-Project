@@ -14,7 +14,7 @@ class ListOPtions extends Component {
     }
     
     filterBy = (event) => {
-        this.setState({ device_type: event.target.value }, () => this.props.filterList(this.state.device_type));
+        this.setState({ device_type: event.target.value }, () => this.props.filterValue(this.state.device_type));
     }
     sortBy = (event) => {
         this.setState({ sort_by: event.target.value }, () => this.props.sortList(this.props.devices , this.state.sort_by));
@@ -49,7 +49,7 @@ class ListOPtions extends Component {
     }
 }
 
-const mapStateToProps = state => ({ devices: state.devices });
+const mapStateToProps = state => ({ devices: state.devicesReducer.devices });
 const mapDispatchToProps = dispatch => DEVICES(dispatch)
 
 export default connect(mapStateToProps, mapDispatchToProps)(ListOPtions);

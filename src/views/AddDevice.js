@@ -52,7 +52,7 @@ class AddDevice extends Component {
   }
 }
 const mapStateToProps = state => {
-  return { devices: state.devices };
+  return { devices: state.devicesReducer.devices };
 };
 const mapDispatchToProps = dispatch => DEVICES(dispatch)
 
