@@ -8,19 +8,18 @@ class ListOPtions extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            system_name: "",
-            type: "",
-            hdd_capacity: ""
+            device_type: "",
+            sort_by: ""
         }
     }
-    handleChangeName = (event) => {
-        this.setState({ system_name: event.target.value }, () => this.props.filterName(this.state.system_name));
+    filterBy = (event) => {
+        this.setState({ device_type: event.target.value }, () =>{
+            
+          return  this.props.filterList(this.state.device_type);
+        })
     }
-    handleChangeType = (event) => {
-        this.setState({ type: event.target.value }, () => this.props.filterType(this.state.type));
-    }
-    handleChangeCapacity = (event) => {
-        this.setState({ hdd_capacity: event.target.value }, () => this.props.filterCapacity(this.state.hdd_capacity));
+    sortBy = (event) => {
+        this.setState({ sort_by: event.target.value }, () => this.props.sortList(this.state.sort_by));
     }
     render() {
         return (
@@ -28,25 +27,20 @@ class ListOPtions extends Component {
                 <div className="list-options">
                     <Link to="/devices/add" className="submitButton">ADD DEVICE</Link>
                     <div className="list-filters">
-                        <div className="filetrname">
-                            <label htmlFor="system_name">System Name: </label>
-                            <input id="system_name" name="system_name" value={this.state.system_name} onChange={this.handleChangeName} />
-                        </div>
-                        <div className="filtertype">
-                            <label htmlFor="type">Device Type: </label>
-                            <select id="type" name="type" value={this.state.type} onChange={this.handleChangeType}>
+                        <div className="filter1">
+                            <label htmlFor="device_type">Device Type: </label>
+                            <select id="device_type" name="device_type" value={this.state.device_type} onChange={this.filterBy}>
                                 <option value="ALL">ALL</option>
                                 <option value="WINDOWS_WORKSTATION">WINDOWS WORKSTATION</option>
                                 <option value="WINDOWS_SERVER">WINDOWS SERVER</option>
                                 <option value="MAC">MAC</option>
                             </select>
                         </div>
-                        <div className="filtercapacity">
-                            <label htmlFor="hdd_capacity">Short by: </label>
-                            <select id="hdd_capacity" name="hdd_capacity" value={this.state.hdd_capacity} onChange={this.handleChangeCapacity}>
-                                <option value="HDD CAPACITY">HDD CAPACITY</option>
-                                <option value="LOW TO HIGH">LOW TO HIGH</option>
-                                <option value="HIGH TO LOW">HIGH TO LOW</option>
+                        <div className="filter2">
+                            <label htmlFor="sort_by">Short by: </label>
+                            <select id="sort_by" name="sort_by" value={this.state.sort_by} onChange={this.sortBy}>
+                                <option value="hdd_capacity">HDD CAPACITY</option>
+                                <option value="system_name">SYSTEM NAME</option>
                             </select>
                         </div>
                     </div>

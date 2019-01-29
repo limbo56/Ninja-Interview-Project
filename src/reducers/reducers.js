@@ -1,9 +1,8 @@
 const initialState = () => ({
   devices: [],
-  searchName: "",
-  searchbyType: "ALL",
-  searchbyCapacity: 0,
-  devicetoedit: null,
+  fil_sort: [],
+  filter_by: "ALL",
+  sort_by: "hdd_capacity"
 });
 
 const addDevice = (state, { device }) => ({
@@ -29,20 +28,17 @@ const removeDevice = (state, { device }) => ({
 const updateDevices = (state, { device }) => (
   { ...state })
 
-const filterCapacity = (state, { value }) => ({
+const sortBy = (state, { value }) => ({
   ...state,
-  searchbyCapacity: value
+  sort_by: value
 });
 
 const filterType = (state, { value }) => ({
   ...state,
-  searchbyType: value
+  filter_by: value
 });
 
-const filterName = (state, { value }) => ({
-  ...state,
-  searchName: value
-});
+
 
 function rootReducer(state = initialState(), action) {
   switch (action.type) {
@@ -56,12 +52,10 @@ function rootReducer(state = initialState(), action) {
       return getDevice(state, action)
     case "UPDATE_DEVICES":
       return updateDevices(state, action)
-    case "FILTER_CAPACITY":
-      return filterCapacity(state, action)
     case "FILTER_TYPE":
       return filterType(state, action)
-    case "FILTER_NAME":
-      return filterName(state, action)
+    case "SORT_BY":
+      return sortBy(state, action)
     default:
       return state;
   }

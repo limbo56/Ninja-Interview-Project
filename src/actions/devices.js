@@ -34,14 +34,11 @@ export const DEVICES = (dispatch) => ({
       dispatch({ type: "UPDATE_DEVICES", device })
     }
   },
-  filterCapacity: (value) => {
-    dispatch({ type: "FILTER_CAPACITY", value })
-  },
-  filterType: (value) => {
+  filterList: (value) => {
     dispatch({ type: "FILTER_TYPE", value })
   },
-  filterName: (value) => {
-    dispatch({ type: "FILTER_NAME", value })
+  sortList: (value) => {
+    dispatch({ type: "SORT_BY", value })
   },
 });
 
