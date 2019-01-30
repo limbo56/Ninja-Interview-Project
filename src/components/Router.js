@@ -5,17 +5,9 @@ import {List ,AddDevice, EditDevices} from '../views';
 import '../sass/App.scss';
 
 class Rooter extends PureComponent {
-  constructor(props) {
-    super(props);
-    this.state = {
-      devices: []
-    }
-  }
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-        </header>
         <BrowserRouter>
           <Switch>
             <Route  path='/devices/edit/:id' component={EditDevices} />

@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from "react-redux";
 import { DEVICES } from '../actions';
 import { Link } from 'react-router-dom';
 
-class Device extends Component {
+class Device extends PureComponent {
 
   render() {
     var device = this.props.data;

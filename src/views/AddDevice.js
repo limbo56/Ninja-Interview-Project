@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { connect } from "react-redux";
 import { DEVICES } from '../actions';
 import { Link } from 'react-router-dom';
 import { withAlert } from 'react-alert'
 
 
-class AddDevice extends Component {
+class AddDevice extends PureComponent {
   constructor(props) {
     super(props);
     this.state = {
