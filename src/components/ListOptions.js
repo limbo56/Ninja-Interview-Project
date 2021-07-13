@@ -21,9 +21,8 @@ class ListOPtions extends PureComponent {
     }
     render() {
         return (
-            <div className="list-box">
+            <div className="list-options-box">
                 <div className="list-options">
-                    <Link to="/devices/add" className="submitButton">ADD DEVICE</Link>
                     <div className="list-filters">
                         <div className="filter1">
                             <label htmlFor="device_type">Device Type: </label>
@@ -35,13 +34,14 @@ class ListOPtions extends PureComponent {
                             </select>
                         </div>
                         <div className="filter2">
-                            <label htmlFor="sort_by">Short by: </label>
+                            <label htmlFor="sort_by">Sort by: </label>
                             <select id="sort_by" name="sort_by" value={this.state.sort_by} onChange={this.sortBy}>
                                 <option value="hdd_capacity">HDD CAPACITY</option>
                                 <option value="system_name">SYSTEM NAME</option>
                             </select>
                         </div>
-                    </div>
+                        <Link to="/devices/add" className="submitButton">ADD DEVICE</Link>
+                    </div> 
                 </div>
 
             </div>

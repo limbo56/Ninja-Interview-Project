@@ -30,7 +30,7 @@ class AddDevice extends PureComponent {
 
   render() {
     return (
-      <div className="device-form-container">
+      <div className="device-form-container login-bg-image" style={{ backgroundImage: `url('https://ok7static.oktacdn.com/fs/bco/7/fs04obklxBa81o0zl356')` }}>
         <div className="device-form">
           <h3>NEW DEVICE</h3>
           <label htmlFor="system_name">System Name</label>

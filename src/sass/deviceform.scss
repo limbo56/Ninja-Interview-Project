@@ -1,8 +1,11 @@
 .device-form-container {
-  height: 80vh;
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-repeat: no-repeat;
+  background-position: 50%;
+  background-size: cover;
 }
 
 .device-form {
