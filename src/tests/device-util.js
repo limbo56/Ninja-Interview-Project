@@ -1,6 +1,7 @@
 import fetch from "node-fetch";
-import { t } from "testcafe";
+import { Selector, t } from "testcafe";
 import { ReactSelector } from "testcafe-react-selectors";
+import { filter } from "../methods";
 
 // Constant pointing to the API endpoint
 const API_URL = "http://localhost:3000";
@@ -23,12 +24,10 @@ export const modifyDeviceData = {
  * @returns List of devices
  */
 export function fetchDevices() {
-  return fetch(API_URL + "/devices")
-    .then((res) => res.json())
-    .catch((e) => {
-      console.error(e);
-      throw e;
-    });
+  return fetch(API_URL + "/devices").catch((e) => {
+    console.error(e);
+    throw e;
+  });
 }
 
 /**
@@ -184,4 +183,130 @@ export async function hasDeviceActionButtons(deviceElement, device) {
     .ok(`remove button of device ${id} exists`)
     .expect(remooveButton.visible)
     .ok(`remove button of device ${id} is visible`);
+}
+
+/**
+ * Filters a list of devices by their {@code type} property.
+ * @see {@link filter}
+ * @param {Array} devices list of devices
+ * @param {String} type property to only include in the resulting array
+ * @returns Filtered array
+ */
+export function filterDevicesByType(devices, type) {
+  return filter(Array.from(devices), "type", type);
+}
+
+/**
+ * Selects the option containing the {@code text} inputted in a select element
+ * @param {*} selectElement selector pointing to the select element
+ * @param {*} options selector of avaialble options of the select
+ * @param {String} text string value of one of the options
+ * @returns Promise
+ */
+export function selectOption(selectElement, options, text) {
+  return t.click(selectElement).click(options.withText(text));
+}
+
+/**
+ * Executes an API call to retrieve the list of available devices
+ * while asserting that the response was succesful and that the results are not null
+ * @returns List of retrieved devices
+ */
+export async function assertFetchDevices() {
+  // Fetch device list and check if the request was succesful
+  const response = await fetchDevices();
+  await t
+    .expect(response.status)
+    .eql(200, "device list fetch request is succesful");
+
+  // Parse json response and check if device list is not null
+  const devices = await response.json();
+  await t.expect(devices).notEql(null, "device list fetched is not null");
+  return devices;
+}
+
+/**
+ * Retrieves all the Device components from the DOM and asserts if the order in which
+ * the components are rendered matches the order of the {@code devices} list inputted
+ * @param {Array} devices array of devices with expected order
+ */
+export async function deviceDisplayMatchesOrder(devices) {
+  // Retrieve all Device components and check if the length matches
+  const deviceComponents = await ReactSelector("ListDevices").findReact(
+    "Device"
+  );
+  await t.expect(deviceComponents.count).eql(devices.length);
+
+  // Check if the devices are on the same order as the device list inputted
+  for (let i = 0; i < devices.length; i++) {
+    const device = devices[i];
+    const component = deviceComponents.nth(i);
+    const componentData = await getDeviceDataFromComponent(component);
+
+    // Check if the id of the device from the list matches the one in the component data
+    await t
+      .expect(componentData.id)
+      .eql(device.id, `device id matches with component id at index ${i}`);
+  }
+}
+
+function normalizeDeviceType(type) {
+  return type.split("_").join(" ");
+}
+
+/**
+ * Optionally fills the fields provided in the {@code data} if they are present and
+ * then submits the form
+ * @param {Object} data object containing the data to fill out the form
+ */
+export async function submitDeviceForm(data) {
+  const {
+    system_name: deviceName,
+    type: deviceType,
+    hdd_capacity: deviceCapacity,
+  } = data;
+  const deviceForm = Selector(".device-form");
+
+  // Check that the create device form exists
+  await t.expect(deviceForm.exists).ok("create device form exists");
+
+  // Fill system name
+  const nameInput = Selector("#system_name");
+  if (deviceName != null) {
+    await t
+      .selectText(nameInput)
+      .pressKey("delete")
+      .typeText(nameInput, deviceName)
+      .expect(nameInput.value)
+      .eql(deviceName, "device name of create device form matches");
+  }
+
+  // Select system type
+  const typeSelect = Selector("#type");
+  const typeOptions = typeSelect.find("option");
+  if (deviceType != null) {
+    await t
+      .click(typeSelect)
+      .click(typeOptions.withText(normalizeDeviceType(deviceType)))
+      .expect(typeSelect.value)
+      .eql(deviceType, "device type of create device form matches");
+  }
+
+  // Fill system capacity
+  const capacityInput = Selector("#hdd_capacity");
+  if (deviceCapacity != null) {
+    await t
+      .selectText(capacityInput)
+      .pressKey("delete")
+      .typeText(capacityInput, deviceCapacity)
+      .expect(capacityInput.value)
+      .eql(deviceCapacity, "device capacity of create device form matches");
+  }
+
+  // Check that the submit button exists and submit the form
+  const submitButton = deviceForm.find(".changebutton .submitButton");
+  await t
+    .expect(submitButton.exists)
+    .ok("submit button of device form exists")
+    .click(submitButton);
 }

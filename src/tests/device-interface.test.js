@@ -1,4 +1,5 @@
 import { Selector, t } from "testcafe";
+import { sort } from "../methods";
 import {
   getDeviceDataFromComponent,
   findDeviceComponentById,
@@ -6,63 +7,115 @@ import {
   placeholderDevice,
   modifyDeviceData,
   displayMatchesDevice,
+  assertFetchDevices,
+  hasDeviceActionButtons,
+  filterDevicesByType,
+  selectOption,
+  deviceDisplayMatchesOrder,
+  submitDeviceForm,
 } from "./device-util";
 
-function normalizeDeviceType(type) {
-  return type.split("_").join(" ");
-}
+fixture`Device list display`.page`http://localhost:3001/`;
 
-async function submitDeviceForm(data) {
-  const {
-    system_name: deviceName,
-    type: deviceType,
-    hdd_capacity: deviceCapacity,
-  } = data;
-  const deviceForm = Selector(".device-form");
-
-  // Check that the create device form exists
-  await t.expect(deviceForm.exists).ok("create device form exists");
-
-  // Fill system name
-  const nameInput = Selector("#system_name");
-  if (deviceName != null) {
-    await t
-      .selectText(nameInput)
-      .pressKey("delete")
-      .typeText(nameInput, deviceName)
-      .expect(nameInput.value)
-      .eql(deviceName, "device name of create device form matches");
-  }
-
-  // Select system type
-  const typeSelect = Selector("#type");
-  const typeOptions = typeSelect.find("option");
-  if (deviceType != null) {
-    await t
-      .click(typeSelect)
-      .click(typeOptions.withText(normalizeDeviceType(deviceType)))
-      .expect(typeSelect.value)
-      .eql(deviceType, "device type of create device form matches");
-  }
-
-  // Fill system capacity
-  const capacityInput = Selector("#hdd_capacity");
-  if (deviceCapacity != null) {
-    await t
-      .selectText(capacityInput)
-      .pressKey("delete")
-      .typeText(capacityInput, deviceCapacity)
-      .expect(capacityInput.value)
-      .eql(deviceCapacity, "device capacity of create device form matches");
-  }
-
-  // Check that the submit button exists and submit the form
-  const submitButton = deviceForm.find(".changebutton .submitButton");
+test("Device list exists and is visible", async (t) => {
+  // Find device list element, then check if it exists and is visible
+  const deviceList = Selector(".list-devices");
   await t
-    .expect(submitButton.exists)
-    .ok("submit button of device form exists")
-    .click(submitButton);
-}
+    .expect(deviceList.exists)
+    .ok("device list element exists")
+    .expect(deviceList.visible)
+    .ok("device list is visible");
+});
+
+test("Device information display", async (t) => {
+  const devices = await assertFetchDevices();
+
+  for (const device of devices) {
+    const deviceComponent = await findDeviceComponentById(device.id);
+
+    // Perform checks on the device element
+    // 1 - Device element exists and is visible
+    // 2 - Device information being displayed is correct
+    // 3 - Device element contains both action buttons
+    await t
+      .expect(deviceComponent.exists)
+      .ok(`device ${device.id} exists`)
+      .expect(deviceComponent.visible)
+      .ok(`device ${device.id} is visible`);
+    await displayMatchesDevice(deviceComponent, device);
+    await hasDeviceActionButtons(deviceComponent, device);
+  }
+});
+
+test("Filter devices by type", async (t) => {
+  // Select device list filter and select filter options
+  // Check if both the select element and options exist
+  const typeFilterSelect = Selector(
+    ".list-options-box .list-options .list-filters .filter1 select"
+  );
+  const typeFilterOptions = typeFilterSelect.child("option");
+  await t
+    .expect(typeFilterSelect.exists)
+    .ok("device list filter exists")
+    .expect(typeFilterOptions.exists)
+    .ok("device list filter options exist");
+
+  // Fetch devices and apply default sort to device list
+  const devices = await assertFetchDevices();
+  const sortedDevices = sort(devices, "hdd_capacity");
+
+  // Apply windows workstation filter and check if order matches
+  const windowsWorkstationFilter = filterDevicesByType(
+    sortedDevices,
+    "WINDOWS_WORKSTATION"
+  );
+  await selectOption(
+    typeFilterSelect,
+    typeFilterOptions,
+    "WINDOWS WORKSTATION"
+  );
+  await deviceDisplayMatchesOrder(windowsWorkstationFilter);
+
+  // Apply windows server filter and check if order matches
+  const windowsServerFilter = filterDevicesByType(
+    sortedDevices,
+    "WINDOWS_SERVER"
+  );
+  await selectOption(typeFilterSelect, typeFilterOptions, "WINDOWS SERVER");
+  await deviceDisplayMatchesOrder(windowsServerFilter);
+
+  // Apply windows server filter and check if order matches
+  const macFilter = filterDevicesByType(sortedDevices, "MAC");
+  await selectOption(typeFilterSelect, typeFilterOptions, "MAC");
+  await deviceDisplayMatchesOrder(macFilter);
+});
+
+test("Sort devices by capacity", async (t) => {
+  // Select device list sorter and select device sorter options
+  // Check if both the select element and options exist
+  const deviceSortSelect = Selector(
+    ".list-options-box .list-options .list-filters .filter2 select"
+  );
+  const deviceSortOptions = deviceSortSelect.child("option");
+  await t
+    .expect(deviceSortSelect.exists)
+    .ok("device list sorter exists")
+    .expect(deviceSortOptions.exists)
+    .ok("device list sorter options exist");
+
+  // Fetch device list
+  const devices = await assertFetchDevices();
+
+  // Apply hdd capacity sort to device list and check if the order of the components match
+  const sortedByCapacity = sort([...devices], "hdd_capacity");
+  await selectOption(deviceSortSelect, deviceSortOptions, "HDD CAPACITY");
+  await deviceDisplayMatchesOrder(sortedByCapacity);
+
+  // Apply system name sort to device list and check if the order of the components match
+  const sortedByName = sort([...devices], "system_name");
+  await selectOption(deviceSortSelect, deviceSortOptions, "SYSTEM NAME");
+  await deviceDisplayMatchesOrder(sortedByName);
+});
 
 fixture`Modify device list using interface`.page`http://localhost:3001/`;
 
