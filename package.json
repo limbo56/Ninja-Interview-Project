@@ -23,7 +23,7 @@
   "scripts": {
     "start": "set PORT=3001 && react-scripts start",
     "build": "react-scripts build",
-    "test": "testcafe 'chrome:headless' ./tests/",
+    "test": "testcafe 'chrome:headless' ./src/tests/",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
