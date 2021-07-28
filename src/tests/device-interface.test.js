@@ -17,7 +17,7 @@ import {
 
 fixture`Device list display`.page`http://localhost:3001/`;
 
-test("Device list exists and is visible", async (t) => {
+test("Device list existence and visibility", async (t) => {
   // Find device list element, then check if it exists and is visible
   const deviceList = Selector(".list-devices");
   await t
