@@ -56,5 +56,5 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => DEVICES(dispatch)
 
-export default connect(mapStateToProps, mapDispatchToProps)(withAlert(AddDevice));
+export default connect(mapStateToProps, mapDispatchToProps)(withAlert()(AddDevice));
 
