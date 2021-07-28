@@ -20,7 +20,8 @@ class AddDevice extends PureComponent {
   }
   onSubmit = (event) => {
     if (this.state.system_name.length > 0 && parseInt(this.state.hdd_capacity) > 0) {
-      this.props.addDevice(this.state)
+      const formattedType = this.state.type.split(" ").join("_");
+      this.props.addDevice({ ...this.state, type: formattedType })
     }
     else {
       event.preventDefault();
