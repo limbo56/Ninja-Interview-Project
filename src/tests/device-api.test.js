@@ -15,7 +15,7 @@ function reloadCurrentPage() {
   return t.navigateTo("/");
 }
 
-async function cleanUp(t) {
+async function removeAddedDevice() {
   // Removing the device used by the previous test
   const newDeviceId = t.fixtureCtx.newDeviceId;
   const response = await removeDevice(newDeviceId);
@@ -27,7 +27,22 @@ async function cleanUp(t) {
   t.fixtureCtx.newDeviceId = undefined;
 }
 
-async function regenerateRemoved(t) {
+async function resetModifiedDevice(t) {
+  // Restore default state of the renamed device
+  const originalDevice = t.fixtureCtx.originalDevice;
+  const response = await updateDevice(originalDevice.id, {
+    ...originalDevice,
+  });
+  await t
+    .expect(response.status)
+    .eql(200, "update device request is successful");
+
+  // Clean up context
+  t.fixtureCtx.originalDevice = undefined;
+}
+
+async function regenerateRemovedDevice(t) {
+  // Regenerate removed device
   const removedDeviceData = t.fixtureCtx.removedDevice;
   const response = await addDevice(removedDeviceData);
   await t
@@ -62,7 +77,7 @@ test("Add new device", async (t) => {
 
   // Assign new context variable with the new device id for clean up
   t.fixtureCtx.newDeviceId = newDeviceData.id;
-}).after(cleanUp);
+}).after(removeAddedDevice);
 
 test("Rename first device of list", async (t) => {
   // Retrieve first device of list and check if it exists
@@ -95,9 +110,9 @@ test("Rename first device of list", async (t) => {
   // Check if the device is displaying the updated information correclty
   await displayMatchesDevice(renamedDevice, renamedDeviceData);
 
-  // Assign new context variable with the modified device id for clean up
-  t.fixtureCtx.newDeviceId = renamedDeviceData.id;
-}).after(cleanUp);
+  // Assign new context variable with the original device data for restoring
+  t.fixtureCtx.originalDevice = firstDeviceData;
+}).after(resetModifiedDevice);
 
 test("Remove last device of list", async (t) => {
   // Retrieve last device of list and check if it exists
@@ -118,4 +133,4 @@ test("Remove last device of list", async (t) => {
 
   // Asign new context variable containing the data of the removed device to regenerate it
   t.fixtureCtx.removedDevice = lastDeviceData;
-}).after(regenerateRemoved);
+}).after(regenerateRemovedDevice);
