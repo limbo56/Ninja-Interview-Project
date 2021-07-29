@@ -2,22 +2,7 @@ import fetch from "node-fetch";
 import { Selector, t } from "testcafe";
 import { ReactSelector } from "testcafe-react-selectors";
 import { filter } from "../methods";
-
-// Constant pointing to the API endpoint
-const API_URL = "http://localhost:3000";
-
-// Placeholder device data to use for tests
-export const placeholderDevice = {
-  system_name: "Test Workstation",
-  type: "WINDOWS_WORKSTATION",
-  hdd_capacity: "5",
-};
-
-// Properties used to modify a new device during tests
-export const modifyDeviceData = {
-  system_name: "Renamed Device",
-  hdd_capacity: "10",
-};
+import { API_URL } from "./constants";
 
 /**
  * Executes an API call to retrieve the list of available devices
@@ -285,9 +270,7 @@ export async function submitDeviceForm(data) {
   const typeSelect = Selector("#type");
   const typeOptions = typeSelect.find("option");
   if (deviceType != null) {
-    await t
-      .click(typeSelect)
-      .click(typeOptions.withText(normalizeDeviceType(deviceType)))
+    await selectOption(typeSelect, typeOptions, normalizeDeviceType(deviceType))
       .expect(typeSelect.value)
       .eql(deviceType, "device type of create device form matches");
   }

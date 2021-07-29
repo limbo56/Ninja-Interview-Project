@@ -1,11 +1,12 @@
-import { Selector, t } from "testcafe";
+import { Selector } from "testcafe";
 import { sort } from "../methods";
 import {
+  CREATE_DEVICE_DATA,
+  MODIFY_DEVICE_DATA,
+  WEB_URL,
   getDeviceDataFromComponent,
   findDeviceComponentById,
   findDeviceComponentsByProperties,
-  placeholderDevice,
-  modifyDeviceData,
   displayMatchesDevice,
   assertFetchDevices,
   hasDeviceActionButtons,
@@ -13,10 +14,13 @@ import {
   selectOption,
   deviceDisplayMatchesOrder,
   submitDeviceForm,
-} from "./device-util";
+} from "../utils";
 
-fixture`Device list display`.page`http://localhost:3001/`;
+fixture`Device list display`.page(WEB_URL);
 
+/**
+ * Extra
+ */
 test("Device list existence and visibility", async (t) => {
   // Find device list element, then check if it exists and is visible
   const deviceList = Selector(".list-devices");
@@ -27,6 +31,9 @@ test("Device list existence and visibility", async (t) => {
     .ok("device list is visible");
 });
 
+/**
+ * Test 1
+ */
 test("Device information display", async (t) => {
   const devices = await assertFetchDevices();
 
@@ -47,6 +54,9 @@ test("Device information display", async (t) => {
   }
 });
 
+/**
+ * Extra
+ */
 test("Filter devices by type", async (t) => {
   // Select device list filter and select filter options
   // Check if both the select element and options exist
@@ -90,7 +100,10 @@ test("Filter devices by type", async (t) => {
   await deviceDisplayMatchesOrder(macFilter);
 });
 
-test("Sort devices by capacity", async (t) => {
+/**
+ * Extra
+ */
+test("Sort devices by property", async (t) => {
   // Select device list sorter and select device sorter options
   // Check if both the select element and options exist
   const deviceSortSelect = Selector(
@@ -117,8 +130,11 @@ test("Sort devices by capacity", async (t) => {
   await deviceDisplayMatchesOrder(sortedByName);
 });
 
-fixture`Modify device list using interface`.page`http://localhost:3001/`;
+fixture`Modify device list using interface`.page(WEB_URL);
 
+/**
+ * Test 2
+ */
 test("Add new device", async (t) => {
   // Check if the add button exists and then click it
   const addDeviceButton = Selector(".list-filters .submitButton");
@@ -128,11 +144,11 @@ test("Add new device", async (t) => {
     .click(addDeviceButton);
 
   // Input placeholder data to create form and submit
-  await submitDeviceForm(placeholderDevice);
+  await submitDeviceForm(CREATE_DEVICE_DATA);
 
   // Check if the new device exists and is visible
   const newDeviceComponent = await findDeviceComponentsByProperties(
-    placeholderDevice
+    CREATE_DEVICE_DATA
   );
   await t
     .expect(newDeviceComponent.exists)
@@ -148,6 +164,9 @@ test("Add new device", async (t) => {
   t.fixtureCtx.newDeviceId = newDeviceData.id;
 });
 
+/**
+ * Extra
+ */
 test("Modify new device", async (t) => {
   // Check if the first device exists
   const newDeviceId = t.fixtureCtx.newDeviceId;
@@ -164,7 +183,7 @@ test("Modify new device", async (t) => {
     .click(editDeviceButton);
 
   // Input new name to edit form and submit
-  await submitDeviceForm(modifyDeviceData);
+  await submitDeviceForm(MODIFY_DEVICE_DATA);
 
   // Find the first device and check if it exists
   const modifiedDeviceComponent = findDeviceComponentById(newDeviceId);
@@ -179,6 +198,9 @@ test("Modify new device", async (t) => {
   await displayMatchesDevice(modifiedDeviceComponent, modifiedDeviceData);
 });
 
+/**
+ * Extra
+ */
 test("Remove modified device", async (t) => {
   // Find the added device and check if it exists
   const newDeviceId = t.fixtureCtx.newDeviceId;

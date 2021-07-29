@@ -1,15 +1,16 @@
 import { t } from "testcafe";
 import { ReactSelector } from "testcafe-react-selectors";
 import {
+  CREATE_DEVICE_DATA,
+  MODIFY_DEVICE_DATA,
+  WEB_URL,
   addDevice,
   displayMatchesDevice,
   findDeviceComponentById,
   getDeviceDataFromComponent,
-  modifyDeviceData,
-  placeholderDevice,
   removeDevice,
   updateDevice,
-} from "./device-util";
+} from "../utils";
 
 function reloadCurrentPage() {
   return t.navigateTo("/");
@@ -30,9 +31,7 @@ async function removeAddedDevice() {
 async function resetModifiedDevice(t) {
   // Restore default state of the renamed device
   const originalDevice = t.fixtureCtx.originalDevice;
-  const response = await updateDevice(originalDevice.id, {
-    ...originalDevice,
-  });
+  const response = await updateDevice(originalDevice.id, originalDevice);
   await t
     .expect(response.status)
     .eql(200, "update device request is successful");
@@ -53,11 +52,14 @@ async function regenerateRemovedDevice(t) {
   t.fixtureCtx.removedDevice = undefined;
 }
 
-fixture`Modify device list using API`.page`http://localhost:3001/`;
+fixture`Modify device list using API`.page(WEB_URL);
 
+/**
+ * Extra
+ */
 test("Add new device", async (t) => {
   // Add placeholder device and check that the request was successful
-  const response = await addDevice(placeholderDevice);
+  const response = await addDevice(CREATE_DEVICE_DATA);
   await t.expect(response.status).eql(200, "add device request is successful");
 
   // Reload the current page
@@ -79,6 +81,9 @@ test("Add new device", async (t) => {
   t.fixtureCtx.newDeviceId = newDeviceData.id;
 }).after(removeAddedDevice);
 
+/**
+ * Test 3
+ */
 test("Rename first device of list", async (t) => {
   // Retrieve first device of list and check if it exists
   const firstDeviceComponent = ReactSelector("Device").nth(0);
@@ -90,7 +95,7 @@ test("Rename first device of list", async (t) => {
   );
   const response = await updateDevice(firstDeviceData.id, {
     ...firstDeviceData,
-    system_name: modifyDeviceData.system_name,
+    system_name: MODIFY_DEVICE_DATA.system_name,
   });
   await t.expect(response.status).eql(200, "update device request successful");
 
@@ -105,7 +110,7 @@ test("Rename first device of list", async (t) => {
   const renamedDeviceData = await getDeviceDataFromComponent(renamedDevice);
   await t
     .expect(renamedDeviceData.name)
-    .eql(modifyDeviceData.name, "renamed device name matches");
+    .eql(MODIFY_DEVICE_DATA.name, "renamed device name matches");
 
   // Check if the device is displaying the updated information correclty
   await displayMatchesDevice(renamedDevice, renamedDeviceData);
@@ -114,6 +119,9 @@ test("Rename first device of list", async (t) => {
   t.fixtureCtx.originalDevice = firstDeviceData;
 }).after(resetModifiedDevice);
 
+/**
+ * Test 4
+ */
 test("Remove last device of list", async (t) => {
   // Retrieve last device of list and check if it exists
   const lastDeviceComponent = ReactSelector("Device").nth(-1);
