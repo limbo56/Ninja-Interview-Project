@@ -35,7 +35,7 @@ export function addDevice(data) {
 
 /**
  * Executes an API request to update a device with a matching {@code deviceId}
- * @param {String} deviceId id of the device to update
+ * @param {String} deviceId id of the device
  * @param {Object} data new device data
  * @returns Promise of request
  */
@@ -54,7 +54,7 @@ export function updateDevice(deviceId, data) {
 
 /**
  * Executes an API request to remove a device with a matching {@code deviceId}
- * @param {String} deviceId id of the device to update
+ * @param {String} deviceId id of the device
  * @returns Promise of request
  */
 export function removeDevice(deviceId) {
@@ -119,7 +119,7 @@ function parseDeviceCapacity(capacity) {
 /**
  * Checks that the {@code deviceElement} inputted is displaying information
  * that matches the properties of the {@code device}
- * @param {HTMLElement} deviceElement
+ * @param {HTMLElement} deviceElement element displaying the device
  * @param {Object} device object containing device data
  */
 export async function displayMatchesDevice(deviceElement, device) {
@@ -242,7 +242,7 @@ function normalizeDeviceType(type) {
 /**
  * Optionally fills the fields provided in the {@code data} if they are present and
  * then submits the form
- * @param {Object} data object containing the data to fill out the form
+ * @param {Object} data object containing the data of the form
  */
 export async function submitDeviceForm(data) {
   const {
