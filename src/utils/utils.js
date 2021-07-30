@@ -74,15 +74,7 @@ export function removeDevice(deviceId) {
  * @returns ReactSelector of the Device component
  */
 export function findDeviceComponentsByProperties(device) {
-  const { id, system_name, type, hdd_capacity } = device;
-  const data = Object.assign(
-    {},
-    id != null ? { id } : undefined,
-    system_name != null ? { system_name } : undefined,
-    type != null ? { type } : undefined,
-    hdd_capacity != null ? { hdd_capacity } : undefined
-  );
-  return ReactSelector("Device").withProps({ data });
+  return ReactSelector("Device").withProps({ data: device });
 }
 
 /**
